@@ -2,11 +2,16 @@
 
 > Professional meeting transcription application with speaker diarization, real-time audio processing, and AI-powered summarization
 
-![App Screenshot](./screenshots/app_screenshot.png)
+<img width="1893" height="828" alt="app_screenshot" src="https://github.com/user-attachments/assets/d5dcf21b-9418-49ab-a115-53fdc06e34a8" />
+
 
 ## 📺 Demo Video
 
-[![MeetingApp Demo]](./meetingapp_demo.mp4)
+
+
+https://github.com/user-attachments/assets/b0bd7f41-8c01-4709-b83e-ac71e98d6e18
+
+
 
 ---
 
@@ -831,5 +836,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions or support, please open an issue on GitHub or contact the development team.
 
 **Made with ❤️ by the MeetingApp Team**
+
 
 
