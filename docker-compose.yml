@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # SQL Server Database
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: meetingapp-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=1234
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - meetingapp-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1234 -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # FastAPI Server
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: meetingapp-server
+    environment:
+      - DATABASE_URL=mssql+pyodbc://sa:1234@localhost:1433/MeetingDB?driver=ODBC+Driver+17+for+SQL+Server&TrustServerCertificate=yes
+      - SECRET_KEY=1234
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - ASSEMBLYAI_API_KEY=${ASSEMBLYAI_API_KEY}
+      - HF_TOKEN=${HF_TOKEN}
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8000
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:5173
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server/uploads:/app/uploads
+      - ./server/models:/app/models
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - meetingapp-network
+    restart: unless-stopped
+
+  # React Client
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: meetingapp-client
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    networks:
+      - meetingapp-network
+    restart: unless-stopped
+
+networks:
+  meetingapp-network:
+    driver: bridge
+
+volumes:
+  mssql-data:
