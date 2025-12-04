@@ -7,7 +7,7 @@ services:
     container_name: meetingapp-db
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=1234
+      - SA_PASSWORD=""
       - MSSQL_PID=Express
     ports:
       - "1433:1433"
@@ -16,7 +16,7 @@ services:
     networks:
       - meetingapp-network
     healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1234 -Q "SELECT 1" || exit 1
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P  -Q "SELECT 1" || exit 1
       interval: 10s
       timeout: 3s
       retries: 10
@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile
     container_name: meetingapp-server
     environment:
-      - DATABASE_URL=mssql+pyodbc://sa:1234@localhost:1433/MeetingDB?driver=ODBC+Driver+17+for+SQL+Server&TrustServerCertificate=yes
+      - DATABASE_URL=mssql+pyodbc://sa:""@localhost:1433/MeetingDB?driver=ODBC+Driver+17+for+SQL+Server&TrustServerCertificate=yes
       - SECRET_KEY=1234
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
