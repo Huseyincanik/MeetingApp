@@ -6,7 +6,7 @@
 
 ## 📺 Demo Video
 
-[![MeetingApp Demo](./screenshots/demo_thumbnail.png)](./demo/meetingapp_demo.mp4)
+[![MeetingApp Demo]](./demo/meetingapp_demo.mp4)
 
 ---
 
@@ -831,3 +831,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions or support, please open an issue on GitHub or contact the development team.
 
 **Made with ❤️ by the MeetingApp Team**
+
